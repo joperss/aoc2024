@@ -2,7 +2,7 @@
 import re
 
 def main():
-    with open("input.txt", newline='') as inputFile:
+    with open("input.txt") as inputFile:
         target = inputFile.read()
 
         total = 0
