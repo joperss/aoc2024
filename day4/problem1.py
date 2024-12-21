@@ -12,13 +12,70 @@ def main():
                 cols = max(col, cols)
 
         xs = 0
-        for row in mat:
-            for char in row:
+        hits = 0
+        for x, row in enumerate(mat):
+            for y, char in enumerate(row):
                 if char == 'X':
                     xs += 1
-        
+
+                    check_left = y > 2
+                    check_right = y < cols - 2
+                    check_up = x > 2
+                    check_down = x < rows - 2
+
+                    if check_left:
+                        if mat[x][y - 1] == 'M':
+                            if mat[x][y - 2] == 'A':
+                                if mat[x][y - 3] == 'S':
+                                    hits += 1
+
+                        if check_up:
+                            if mat[x - 1][y - 1] == 'M':
+                                if mat[x - 2][y - 2] == 'A':
+                                    if mat[x - 3][y - 3] == 'S':
+                                        hits += 1
+
+                        if check_down:
+                            if mat[x + 1][y - 1] == 'M':
+                                if mat[x + 2][y - 2] == 'A':
+                                    if mat[x + 3][y - 3] == 'S':
+                                        hits += 1
+
+                    if check_right:
+                        if mat[x][y + 1] == 'M':
+                            if mat[x][y + 2] == 'A':
+                                if mat[x][y + 3] == 'S':
+                                    hits += 1
+
+                        if check_up:
+                            if mat[x - 1][y + 1] == 'M':
+                                if mat[x - 2][y + 2] == 'A':
+                                    if mat[x - 3][y + 3] == 'S':
+                                        hits += 1
+
+                        if check_down:
+                            if mat[x + 1][y + 1] == 'M':
+                                if mat[x + 2][y + 2] == 'A':
+                                    if mat[x + 3][y + 3] == 'S':
+                                        hits += 1
+
+                    if check_up:
+                        if mat[x - 1][y] == 'M':
+                            if mat[x - 2][y] == 'A':
+                                if mat[x - 3][y] == 'S':
+                                    hits += 1
+
+                    if check_down:
+                        if mat[x + 1][y] == 'M':
+                            if mat[x + 2][y] == 'A':
+                                if mat[x + 3][y] == 'S':
+                                    hits += 1
+
+
+
         print(f"X: {xs}")
-        
+        print(f"XMAS: {hits}")
+
 
 if __name__ == '__main__':
     main()
