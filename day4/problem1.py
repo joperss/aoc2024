@@ -1,4 +1,32 @@
 #!/usr/bin/env python3
+
+def fetch_candidate(x: int, y: int, x_term: int, y_term: int, mat: list[list[str]]) -> str:
+    return mat[x][y] + mat[x + x_term][y + y_term] + mat[x + 2 * x_term][y + 2 * y_term] + mat[x + 3 * x_term][y + 3 * y_term]
+
+def fetch_candidates(x: int, y: int, mat: list[list[str]], cols: int, rows: int):
+    candidates = []
+    check_left = x > 2
+    check_right = x < cols - 2
+    check_up = y > 2
+    check_down = y < rows - 2
+    if check_left:
+        candidates.append(fetch_candidate(x, y, -1, 0, mat))
+        if check_up:
+            candidates.append(fetch_candidate(x, y, -1, -1, mat))
+        if check_down:
+            candidates.append(fetch_candidate(x, y, -1, +1, mat))
+    if check_right:
+        candidates.append(fetch_candidate(x, y, +1, 0, mat))
+        if check_up:
+            candidates.append(fetch_candidate(x, y, +1, -1, mat))
+        if check_down:
+            candidates.append(fetch_candidate(x, y, +1, +1, mat))
+    if check_up:
+        candidates.append(fetch_candidate(x, y, 0, -1, mat))
+    if check_down:
+        candidates.append(fetch_candidate(x, y, 0, +1, mat))
+    return candidates
+
 def main():
     with open("input.txt", newline='') as inputFile:
         mat = []
@@ -11,68 +39,16 @@ def main():
                 rows = max(row, rows)
                 cols = max(col, cols)
 
-        xs = 0
         hits = 0
         for x, row in enumerate(mat):
             for y, char in enumerate(row):
                 if char == 'X':
-                    xs += 1
+                    candidates = fetch_candidates(x, y, mat, cols, rows)
 
-                    check_left = x > 2
-                    check_right = x < cols - 2
-                    check_up = y > 2
-                    check_down = y < rows - 2
+                    for candidate in candidates:
+                        if candidate == 'XMAS':
+                            hits += 1
 
-                    if check_left:
-                        if mat[x - 1][y] == 'M':
-                            if mat[x - 2][y] == 'A':
-                                if mat[x - 3][y] == 'S':
-                                    hits += 1
-
-                        if check_up:
-                            if mat[x - 1][y - 1] == 'M':
-                                if mat[x - 2][y - 2] == 'A':
-                                    if mat[x - 3][y - 3] == 'S':
-                                        hits += 1
-
-                        if check_down:
-                            if mat[x - 1][y + 1] == 'M':
-                                if mat[x - 2][y + 2] == 'A':
-                                    if mat[x - 3][y + 3] == 'S':
-                                        hits += 1
-
-                    if check_right:
-                        if mat[x + 1][y] == 'M':
-                            if mat[x + 2][y] == 'A':
-                                if mat[x + 3][y] == 'S':
-                                    hits += 1
-
-                        if check_up:
-                            if mat[x + 1][y - 1] == 'M':
-                                if mat[x + 2][y - 2] == 'A':
-                                    if mat[x + 3][y - 3] == 'S':
-                                        hits += 1
-
-                        if check_down:
-                            if mat[x + 1][y + 1] == 'M':
-                                if mat[x + 2][y + 2] == 'A':
-                                    if mat[x + 3][y + 3] == 'S':
-                                        hits += 1
-
-                    if check_up:
-                        if mat[x][y - 1] == 'M':
-                            if mat[x][y - 2] == 'A':
-                                if mat[x][y - 3] == 'S':
-                                    hits += 1
-
-                    if check_down:
-                        if mat[x][y + 1] == 'M':
-                            if mat[x][y + 2] == 'A':
-                                if mat[x][y + 3] == 'S':
-                                    hits += 1
-
-
-        print(f"X: {xs}")
         print(f"XMAS: {hits}")
 
 
